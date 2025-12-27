@@ -4,17 +4,17 @@ import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger'
 
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.enableCors({
-    origin: [
-      'http://localhost:5173',
-      'http://localhost:3000',
-      'http://45.138.158.80:3003',
-    ],
-    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-  })
+  const app = await NestFactory.create(AppModule, {cors: true});
+  // app.enableCors({
+  //   origin: [
+  //     'http://localhost:5173',
+  //     'http://localhost:3000',
+  //     'http://45.138.158.80:3003',
+  //   ],
+  //   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  //   allowedHeaders: ['Content-Type', 'Authorization'],
+  //   credentials: true,
+  // })
 
   const config = new DocumentBuilder()
     .setTitle("O'quvchilar uchun fake ma'lumotlardan iborat bo'lgan Server Sayt")
