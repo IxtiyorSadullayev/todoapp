@@ -3,6 +3,7 @@ import { TodoModule } from './todo/todo.module';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
+import { LessonsModule } from './lessons/lessons.module';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { JwtModule } from '@nestjs/jwt';
       global: true,
       secret: 'my-secret'
     }),
-    TodoModule, UsersModule],
+    TodoModule, UsersModule, LessonsModule],
 })
 export class AppModule { }
