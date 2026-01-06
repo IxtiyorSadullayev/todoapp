@@ -1,5 +1,5 @@
 import { Todo } from "src/todo/entities/todo.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -22,7 +22,7 @@ export class User {
     @Column()
     birthday: Date;
 
-    @ManyToOne(()=> Todo, (todo)=> todo.user, {cascade: true})
+    @OneToMany(()=> Todo, (todo)=> todo.user, {cascade: true})
     todos: Todo[]
 
     @CreateDateColumn()

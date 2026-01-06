@@ -16,7 +16,8 @@ import { LessonsModule } from './lessons/lessons.module';
     }),
     JwtModule.register({
       global: true,
-      secret: 'my-secret'
+      secret: 'my-secret',
+      signOptions: {expiresIn: '1h'}
     }),
     TodoModule, UsersModule, LessonsModule],
 })

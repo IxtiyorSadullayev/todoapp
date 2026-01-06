@@ -27,6 +27,7 @@ async function bootstrap() {
     .setTitle("O'quvchilar uchun fake ma'lumotlardan iborat bo'lgan Server Sayt")
     .setDescription("Barcha ma'lumotlar nazorat qilinmaydi")
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);

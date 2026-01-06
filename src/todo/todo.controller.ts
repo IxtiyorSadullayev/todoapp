@@ -1,25 +1,34 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
+import { UsersGuard } from 'src/users/users.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('todo')
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
+  @ApiBearerAuth()
+  @UseGuards(UsersGuard)
   @Post()
-  create(@Body() createTodoDto: CreateTodoDto) {
-    return this.todoService.create(createTodoDto);
+  create(@Body() createTodoDto: CreateTodoDto, @Request() req) {
+    return this.todoService.create(createTodoDto, req);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(UsersGuard)
   @Get()
-  findAll() {
-    return this.todoService.findAll();
+  findAll(@Request() req) {
+    return this.todoService.findAll(req);
   }
 
+
+  @ApiBearerAuth()
+  @UseGuards(UsersGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.todoService.findOne(+id);
+  findOne(@Param('id') id: string, @Request() req) {
+    return this.todoService.findOne(+id, req);
   }
 
   @Patch(':id')

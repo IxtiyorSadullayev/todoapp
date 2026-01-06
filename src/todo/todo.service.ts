@@ -4,21 +4,26 @@ import { UpdateTodoDto } from './dto/update-todo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Todo } from './entities/todo.entity';
 import { Repository } from 'typeorm';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class TodoService {
 
   constructor(
     @InjectRepository(Todo) private readonly todoRepo: Repository<Todo>,
+    private userService: UsersService
   ){}
 
-  async create(createTodoDto: CreateTodoDto) {
+  async create(createTodoDto: CreateTodoDto, req) {
     try{
       const todo = await this.todoRepo.findOne({where: {title: createTodoDto.title, description: createTodoDto.description}})
       if (todo){
         throw new HttpException("Kechirasiz ushbu todo oldin yaratilgan", HttpStatus.BAD_REQUEST)
       }
+      const userid = req['user'].user_id 
+      const user =await this.userService.findOne(userid)
       const newtodo = this.todoRepo.create(createTodoDto)
+      newtodo.user = user
       await this.todoRepo.save(newtodo)
       return newtodo;
     }
@@ -27,9 +32,10 @@ export class TodoService {
     }
   }
 
-  async findAll() {
+  async findAll(req) {
     try{
-      const todos = await this.todoRepo.find()
+      const userid = req['user'].user_id
+      const todos = await this.todoRepo.find({where: {user: {id: userid}}})
       return todos;
     }
     catch(e){
@@ -37,9 +43,10 @@ export class TodoService {
     }
   }
 
-  async findOne(id: number) {
+  async findOne(id: number, req) {
     try{
-      const todo = await this.todoRepo.findOne({where: {id: id}})
+      const userid = req['user'].user_id
+      const todo = await this.todoRepo.findOne({where: {user: {id: userid}, id: id}})
       if (!todo){
         throw new HttpException("Kechirasiz ushbu todo topilmadi", HttpStatus.NOT_FOUND)
       }
