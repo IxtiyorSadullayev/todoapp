@@ -18,11 +18,9 @@ export class Todo {
     user: User;
 
     @Column({
-        type: 'enum',
-        enum: ["start", "progress", "complated"],
         default: "start"
     })
-    status: TodoStatus
+    status: string;
 
     @CreateDateColumn()
     created: Date;
