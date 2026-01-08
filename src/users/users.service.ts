@@ -31,10 +31,14 @@ export class UsersService {
   }
 
   async findAll() {
-    return await this.userRepo.find();
+    return await this.userRepo.find({select: {birthday: true, fullname: true, phoneNumber: true, id: true, created: true, updated: true}});
   }
 
-  async findOne(id: number) {
+  async findOne(id: number, req) {
+    const user_id = req['user'].user_id
+    if (user_id != id){
+      throw new HttpException("Kechirasiz ushbu foydalanuvchini olishga ruxsat sizda yo'q", HttpStatus.BAD_REQUEST);
+    }
     const user = await this.userRepo.findOne({where: {id: id}})
     if (!user){
       throw new HttpException("Kechirasiz ushbu foydalanuvchi topilmadi", HttpStatus.NOT_FOUND)
@@ -42,7 +46,11 @@ export class UsersService {
     return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto, req) {
+    const user_id = req['user'].user_id
+    if (user_id != id){
+      throw new HttpException("Kechirasiz ushbu foydalanuvchini o'zgartirishga ruxsat sizda yo'q", HttpStatus.BAD_REQUEST);
+    }
     const user = await this.userRepo.findOne({where: {id: id}})
     if (!user){
       throw new HttpException("Kechirasiz ushbu foydalanuvchi topilmadi", HttpStatus.NOT_FOUND)
@@ -51,7 +59,11 @@ export class UsersService {
     return `This action updates a #${id} user`;
   }
 
-  async remove(id: number) {
+  async remove(id: number, req) {
+    const user_id = req['user'].user_id
+    if (user_id != id){
+      throw new HttpException("Kechirasiz ushbu foydalanuvchini o'chirishga ruxsat sizda yo'q", HttpStatus.BAD_REQUEST);
+    }
     const user = await this.userRepo.findOne({where: {id: id}})
     if (!user){
       throw new HttpException("Kechirasiz ushbu foydalanuvchi topilmadi", HttpStatus.NOT_FOUND)

@@ -21,7 +21,7 @@ export class TodoService {
         throw new HttpException("Kechirasiz ushbu todo oldin yaratilgan", HttpStatus.BAD_REQUEST)
       }
       const userid = req['user'].user_id 
-      const user =await this.userService.findOne(userid)
+      const user =await this.userService.findOne(userid, req)
       const newtodo = this.todoRepo.create(createTodoDto)
       newtodo.user = user
       await this.todoRepo.save(newtodo)
