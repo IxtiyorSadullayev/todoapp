@@ -1,3 +1,4 @@
+import { Lesson } from "src/lessons/entities/lesson.entity";
 import { Todo } from "src/todo/entities/todo.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -24,6 +25,9 @@ export class User {
 
     @OneToMany(()=> Todo, (todo)=> todo.user, {cascade: true})
     todos: Todo[]
+
+    @OneToMany(()=> Lesson, (todo)=> todo.user, {cascade: true})
+    lessons: Lesson[]
 
     @CreateDateColumn()
     created: Date;
